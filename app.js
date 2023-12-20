@@ -1,6 +1,12 @@
 const express = require('express');
+const cors = require('cors');
+const routes = require('./routes/index');
 
 let app = express();
+
+app.use(express.json());
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -13,5 +19,7 @@ app.get('/', (req, res) => {
     documentation: '',
   });
 });
+
+app.use('/v1', routes);
 
 module.exports = app;
