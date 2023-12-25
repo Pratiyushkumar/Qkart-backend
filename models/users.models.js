@@ -24,11 +24,7 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       validate: (value) => {
-        if (
-          !value.match(
-            '^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$'
-          )
-        ) {
+        if (!value.match(/[a-zA-Z]/)) {
           throw new Error(
             'Password must contain at least one letter and one number'
           );
@@ -57,4 +53,4 @@ userSchema.static.isEmailTaken = async function (email) {
 };
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = { User };

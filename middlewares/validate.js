@@ -23,7 +23,6 @@ const validate = (schema) => (req, res, next) => {
 
   // cherry-pick from the request object ["params", "query", "body"] fields
   const object = pick(req, Object.keys(validSchema));
-  console.log(object.params);
   // Compile schema to Joi schema object and validate the request object
   const { value, error } = Joi.compile(validSchema)
     .prefs({ errors: { label: 'key' } })
@@ -34,7 +33,6 @@ const validate = (schema) => (req, res, next) => {
     const errorMessage = error.details
       .map((details) => details.message)
       .join(', ');
-    console.log(errorMessage);
     return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
   }
 

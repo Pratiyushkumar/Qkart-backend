@@ -10,9 +10,7 @@ const httpStatus = require('http-status');
  */
 
 const getUserById = async (id) => {
-  console.log('inside services id', id);
-  const resultById = await User.findById(id);
-  console.log('result by id line 15', resultById);
+  const resultById = await User.find({ _id: id });
   if (!resultById) {
     throw new ApiError(httpStatus.BAD_REQUEST, "userId isn't a valid MongoID");
   } else {
@@ -28,7 +26,7 @@ const getUserById = async (id) => {
  */
 
 const getUserByEmail = async (email) => {
-  const resultByEmail = await User.findOne({ email: email });
+  const resultByEmail = await User.find({ email: email });
   return resultByEmail;
 };
 
