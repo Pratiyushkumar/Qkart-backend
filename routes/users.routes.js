@@ -4,6 +4,6 @@ const uservalidation = require('../validations/user.validation.js');
 const userController = require('../controllers/users.controller.js');
 
 const validateUser = validate(uservalidation.getUser);
-router.use('/:userId', validateUser, userController.getUser);
+router.get('/:userId', validateUser, userController.getUser);
 
 module.exports = router;
