@@ -1,7 +1,7 @@
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError.js');
 const httpStatus = require('http-status');
-
+const mongoose = require('mongoose');
 /**
  * Get User by id
  * - Fetch user object from Mongo using the "_id" field and return user object
@@ -10,11 +10,21 @@ const httpStatus = require('http-status');
  */
 
 const getUserById = async (id) => {
-  const resultById = await User.find({ _id: id });
-  if (!resultById) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "userId isn't a valid MongoID");
-  } else {
-    return resultById;
+  try {
+    const resultById = await User.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+    });
+
+    if (!resultById || resultById.length === 0) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    return resultById; // Assuming the query returns an array of users
+  } catch (error) {
+    console.log({ error });
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Invalid ID format or query error'
+    );
   }
 };
 

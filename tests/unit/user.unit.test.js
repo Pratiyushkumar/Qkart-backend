@@ -15,8 +15,11 @@ describe('user test', () => {
   });
 
   it('should return user', async () => {
-    mockingoose(User).toReturn(userOne, 'find');
-    let userResponse = await userService.getUserById('111');
+    mockingoose(User).toReturn(userOne, 'findOne');
+    let userResponse = await userService.getUserById(
+      '658ab0954083a30748f8e948'
+    );
+    console.log('userResponse', userResponse);
     expect(userResponse._id).toEqual(userOne._id);
     expect(userResponse.name).toBe(userOne.name);
   });

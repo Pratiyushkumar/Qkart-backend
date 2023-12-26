@@ -12,10 +12,10 @@ describe('userRoute', () => {
     await insertUsers([userOne]);
     const res = await request(app).get(`/v1/users/${userOne._id}`).send();
     expect(res.status).toEqual(httpStatus.OK);
-    expect(res._body[0]).toHaveProperty('_id');
-    expect(res._body[0]).toHaveProperty('email');
-    expect(res._body[0]).toHaveProperty('name');
-    expect(res._body[0]).toHaveProperty('walletMoney');
+    expect(res._body).toHaveProperty('_id');
+    expect(res._body).toHaveProperty('email');
+    expect(res._body).toHaveProperty('name');
+    expect(res._body).toHaveProperty('walletMoney');
   }, 10000);
 
   it("should return 400 if userId isn't a valid MongoID", async () => {
