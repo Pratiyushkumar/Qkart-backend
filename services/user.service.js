@@ -1,7 +1,9 @@
-const { User } = require('../models');
+const { User } = require('../models/index.js');
 const ApiError = require('../utils/ApiError.js');
 const httpStatus = require('http-status');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const SALT_WORK_FACTOR = 10;
 /**
  * Get User by id
  * - Fetch user object from Mongo using the "_id" field and return user object
@@ -20,7 +22,6 @@ const getUserById = async (id) => {
     }
     return resultById; // Assuming the query returns an array of users
   } catch (error) {
-    console.log({ error });
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       'Invalid ID format or query error'
@@ -63,10 +64,19 @@ const getUserByEmail = async (email) => {
  */
 
 const createUser = async (user) => {
-  const existUser = await User.isEmailTaken(user.email);
-  if (existUser) throw new ApiError(httpStatus[200], 'Email already taken');
-  const userCreate = await User.create(user);
-  return userCreate;
+  const emailFind = await User.findOne({ email: user.email });
+  if (emailFind) {
+    throw new ApiError(httpStatus[200], 'Email already taken');
+  }
+
+  const hashingPassword = bcrypt.hashSync(user.password, SALT_WORK_FACTOR);
+  const userData = { ...user, password: hashingPassword };
+  try {
+    const newUser = await User.insertMany(userData);
+    return newUser; 
+  } catch (error) {
+    throw error; 
+  }
 };
 
 module.exports = { createUser, getUserByEmail, getUserById };
