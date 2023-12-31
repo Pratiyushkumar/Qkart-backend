@@ -47,9 +47,12 @@ const userSchema = mongoose.Schema(
 );
 
 userSchema.static.isEmailTaken = async function (email) {
-  const emailFind = await userSchema.find({ email });
-  if (emailFind) return true;
-  return false;
+  const emailFind = await this.findOne({ email });
+  if (emailFind) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const User = mongoose.model('User', userSchema);
