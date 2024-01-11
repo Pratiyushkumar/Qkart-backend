@@ -66,7 +66,17 @@ const register = catchAsync(async (req, res) => {
  *}
  *
  */
-const login = catchAsync(async (req, res) => {});
+const login = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  const verifyEmailPassword = await authService.loginUserWithEmailAndPassword(
+    email,
+    password
+  );
+  console.log({ verifyEmailPassword });
+  const token = await tokenService.generateAuthTokens(verifyEmailPassword);
+  console.log(token);
+  res.status(201).json({ user: verifyEmailPassword, tokens: token });
+});
 
 module.exports = {
   register,

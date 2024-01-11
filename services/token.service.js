@@ -48,7 +48,7 @@ const generateToken = (
 const generateAuthTokens = async (user) => {
   const expires = Math.floor(Date.now() / 1000) + 240000;
   const type = tokenTypes.ACCESS;
-  const token = generateToken(user[0]._id.valueOf(), expires, type);
+  const token = generateToken(user._id.toString(), expires, type);
 
   const expiryDate = new Date(expires * 1000).toISOString();
   return {

@@ -1,4 +1,4 @@
-const { User } = require('../models/index.js');
+const { User } = require('../models/users.models.js');
 const ApiError = require('../utils/ApiError.js');
 const httpStatus = require('http-status');
 const mongoose = require('mongoose');
@@ -37,8 +37,12 @@ const getUserById = async (id) => {
  */
 
 const getUserByEmail = async (email) => {
-  const resultByEmail = await User.find({ email: email });
-  return resultByEmail;
+  try {
+    const resultByEmail = await User.findOne({ email: email });
+    return resultByEmail;
+  } catch (error) {
+    return error;
+  }
 };
 
 /**
@@ -73,9 +77,9 @@ const createUser = async (user) => {
   const userData = { ...user, password: hashingPassword };
   try {
     const newUser = await User.insertMany(userData);
-    return newUser; 
+    return newUser[0];
   } catch (error) {
-    throw error; 
+    throw error;
   }
 };
 
