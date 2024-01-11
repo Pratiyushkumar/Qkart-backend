@@ -72,10 +72,10 @@ const login = catchAsync(async (req, res) => {
     email,
     password
   );
-  console.log({ verifyEmailPassword });
+
   const token = await tokenService.generateAuthTokens(verifyEmailPassword);
-  console.log(token);
-  res.status(201).json({ user: verifyEmailPassword, tokens: token });
+
+  res.status(200).json({ user: verifyEmailPassword, tokens: token });
 });
 
 module.exports = {

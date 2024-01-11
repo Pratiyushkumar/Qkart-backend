@@ -18,8 +18,8 @@ const bcrypt = require('bcryptjs');
 const loginUserWithEmailAndPassword = async (email, password) => {
   const userData = await userService.getUserByEmail(email);
   const isPasswordMatch = await bcrypt.compare(password, userData.password);
-  if (!isPasswordMatch) {
-    throw new ApiError(httpStatus[401], 'Incorrect email or password');
+  if (!userData || !isPasswordMatch) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect Credentials');
   }
   return userData;
 };
