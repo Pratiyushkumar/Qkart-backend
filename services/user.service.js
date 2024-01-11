@@ -70,7 +70,7 @@ const getUserByEmail = async (email) => {
 const createUser = async (user) => {
   const emailFind = await User.findOne({ email: user.email });
   if (emailFind) {
-    throw new ApiError(httpStatus[200], 'Email already taken');
+    throw new ApiError(httpStatus.OK, 'Email already taken');
   }
 
   const hashingPassword = bcrypt.hashSync(user.password, SALT_WORK_FACTOR);
